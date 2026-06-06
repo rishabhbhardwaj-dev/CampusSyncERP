@@ -86,15 +86,15 @@ CampusSync/
 
 | Login Page | Dashboard |
 | :---: | :---: |
-| ![Login Page](./assets/login.png) | ![Dashboard](./assets/Dashboard.png) |
+| ![Login Page](./Assets/login.png) | ![Dashboard](./Assets/Dashboard.png) |
 
 | Student Management | Faculty Management |
 | :---: | :---: |
-| ![Students](./assets/Student%20Management.png) | ![Faculty](./assets/Faculty.png) |
+| ![Students](./Assets/Student%20Management.png) | ![Faculty](./Assets/Faculty.png) |
 
 | Attendance Module |
 | :---: |
-| ![Attendance](./assets/Attendance.png) |
+| ![Attendance](./Assets/Attendance.png) |
 
 ---
 
