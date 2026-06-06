@@ -107,8 +107,8 @@ CampusSync/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/CampusSync.git
-cd CampusSync
+git clone https://github.com/rishabhbhardwaj-dev/CampusSyncERP.git
+cd CampusSyncERP
 ```
 
 ### 2. Backend Setup
@@ -192,7 +192,7 @@ The backend is structured around a modular feature-based architecture. Standard 
 
 ## 👨‍💻 Author
 
-**Your Name**  
+**Rishabh Bhardwaj**  
 *Full Stack Developer*  
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- GitHub: [@rishabhbhardwaj-dev](https://github.com/rishabhbhardwaj-dev)
+- LinkedIn: [Rishabh Bhardwaj](https://linkedin.com/in/rishabh-bhardwaj)
