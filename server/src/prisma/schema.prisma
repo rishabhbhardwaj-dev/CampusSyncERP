@@ -1,0 +1,352 @@
+// ─── Prisma Schema for CampusSyncERP ────────────────────────
+// This file defines ALL database tables, their columns, and relationships.
+// Prisma reads this and generates:
+//   1. The MySQL tables (via `prisma migrate`)
+//   2. A type-safe JavaScript client (via `prisma generate`)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ──────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  FACULTY
+  STUDENT
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum ExamType {
+  INTERNAL_1
+  INTERNAL_2
+  SEMESTER
+}
+
+enum FeeType {
+  TUITION
+  EXAM
+  HOSTEL
+  LIBRARY
+  OTHER
+}
+
+enum FeeStatus {
+  PAID
+  UNPAID
+  PARTIAL
+}
+
+enum SubjectType {
+  THEORY
+  PRACTICAL
+}
+
+enum NoticePriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// ─── MODELS ─────────────────────────────────────────────────
+
+/// The base user account. Every person in the system (admin, faculty, student) has one.
+/// Role determines what they can access. The Student/Faculty models hold role-specific data.
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  password     String
+  name         String
+  phone        String?
+  avatar       String?
+  role         Role
+  isActive     Boolean   @default(true)
+  departmentId Int?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  department   Department? @relation(fields: [departmentId], references: [id])
+  student      Student?
+  faculty      Faculty?
+  notices      Notice[]
+  documents    Document[]
+
+  @@index([role])
+  @@index([departmentId])
+  @@map("users")
+}
+
+/// Extra fields for students — enrollment, course, semester, guardian info.
+/// Linked 1:1 with User.
+model Student {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  enrollmentNo  String   @unique
+  courseId       Int
+  semester      Int      @default(1)
+  section       String?
+  admissionYear Int
+  guardianName  String?
+  guardianPhone String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course       Course       @relation(fields: [courseId], references: [id])
+  attendances  Attendance[]
+  marks        Mark[]
+  fees         Fee[]
+
+  @@index([courseId])
+  @@index([semester])
+  @@map("students")
+}
+
+/// Extra fields for faculty — employee ID, designation, qualifications.
+/// Linked 1:1 with User.
+model Faculty {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  employeeId    String   @unique
+  designation   String?
+  qualification String?
+  joiningDate   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects         FacultySubject[]
+  attendances      Attendance[]
+  timetables       Timetable[]
+  hodOfDepartments Department[]     @relation("DepartmentHOD")
+
+  @@map("faculty")
+}
+
+/// Academic departments (e.g., Computer Science, Mechanical).
+/// Has an optional HOD (Head of Department) linked to a Faculty.
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  code      String   @unique
+  hodId     Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  hod      Faculty?  @relation("DepartmentHOD", fields: [hodId], references: [id])
+  courses  Course[]
+  users    User[]
+  notices  Notice[]
+
+  @@map("departments")
+}
+
+/// Degree programs (e.g., B.Tech CSE, BBA). Belongs to a department.
+model Course {
+  id             Int      @id @default(autoincrement())
+  name           String
+  code           String   @unique
+  departmentId   Int
+  duration       Int      @default(4)  // Duration in years
+  totalSemesters Int      @default(8)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  department Department @relation(fields: [departmentId], references: [id])
+  subjects   Subject[]
+  students   Student[]
+  timetables Timetable[]
+  documents  Document[]
+
+  @@map("courses")
+}
+
+/// Individual subjects within a course (e.g., Data Structures, semester 3).
+model Subject {
+  id        Int         @id @default(autoincrement())
+  name      String
+  code      String      @unique
+  courseId   Int
+  semester  Int
+  credits   Int         @default(3)
+  type      SubjectType @default(THEORY)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  course      Course           @relation(fields: [courseId], references: [id])
+  faculty     FacultySubject[]
+  attendances Attendance[]
+  marks       Mark[]
+  timetables  Timetable[]
+  documents   Document[]
+
+  @@index([courseId, semester])
+  @@map("subjects")
+}
+
+/// Junction table: which faculty teaches which subject in which session.
+/// A faculty can teach multiple subjects, and a subject can have multiple faculty.
+model FacultySubject {
+  id        Int      @id @default(autoincrement())
+  facultyId Int
+  subjectId Int
+  session   String   // e.g., "2025-26"
+  createdAt DateTime @default(now())
+
+  // Relations
+  faculty Faculty @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([facultyId, subjectId, session])
+  @@map("faculty_subjects")
+}
+
+/// Daily attendance record for one student in one subject.
+model Attendance {
+  id        Int              @id @default(autoincrement())
+  studentId Int
+  subjectId Int
+  facultyId Int
+  date      DateTime         @db.Date
+  status    AttendanceStatus
+  session   String           // e.g., "2025-26"
+  createdAt DateTime         @default(now())
+
+  // Relations
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  faculty Faculty @relation(fields: [facultyId], references: [id])
+
+  @@unique([studentId, subjectId, date])  // One record per student per subject per day
+  @@index([subjectId, date])
+  @@map("attendance")
+}
+
+/// Marks scored by a student in a subject for a specific exam type.
+model Mark {
+  id            Int      @id @default(autoincrement())
+  studentId     Int
+  subjectId     Int
+  examType      ExamType
+  marksObtained Float
+  maxMarks      Float    @default(100)
+  session       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, subjectId, examType, session])
+  @@index([subjectId, examType])
+  @@map("marks")
+}
+
+/// Fee record for a student — tracks what they owe and what they've paid.
+model Fee {
+  id         Int       @id @default(autoincrement())
+  studentId  Int
+  feeType    FeeType
+  amount     Float
+  dueDate    DateTime  @db.Date
+  paidAmount Float     @default(0)
+  paidDate   DateTime? @db.Date
+  status     FeeStatus @default(UNPAID)
+  session    String
+  remarks    String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Relations
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, session])
+  @@index([status])
+  @@map("fees")
+}
+
+/// Announcements/notices — can target specific roles or departments.
+model Notice {
+  id           Int            @id @default(autoincrement())
+  title        String
+  content      String         @db.Text
+  postedById   Int
+  targetRole   Role?          // null = ALL roles
+  departmentId Int?           // null = all departments
+  priority     NoticePriority @default(MEDIUM)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  // Relations
+  postedBy   User        @relation(fields: [postedById], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+
+  @@index([targetRole])
+  @@index([departmentId])
+  @@map("notices")
+}
+
+/// Timetable records for scheduling classes.
+model Timetable {
+  id        Int      @id @default(autoincrement())
+  courseId  Int
+  semester  Int
+  subjectId Int
+  facultyId Int
+  dayOfWeek String   // e.g., "MONDAY", "TUESDAY"
+  startTime String   // e.g., "10:00 AM"
+  endTime   String   // e.g., "11:00 AM"
+  room      String?
+  session   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  faculty Faculty @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+
+  @@index([courseId, semester])
+  @@index([facultyId])
+  @@map("timetable")
+}
+
+/// Document management for users
+model Document {
+  id           Int      @id @default(autoincrement())
+  title        String
+  filename     String
+  fileUrl      String
+  fileType     String
+  size         Int
+  uploadedById Int
+  courseId     Int?
+  semester     Int?
+  subjectId    Int?
+  createdAt    DateTime @default(now())
+
+  uploader     User     @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  course       Course?  @relation(fields: [courseId], references: [id])
+  subject      Subject? @relation(fields: [subjectId], references: [id])
+
+  @@index([uploadedById])
+  @@index([courseId, semester])
+  @@map("documents")
+}

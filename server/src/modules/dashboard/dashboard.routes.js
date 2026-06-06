@@ -1,0 +1,11 @@
+const express = require('express');
+const authenticate = require('../../middleware/auth');
+const dashboardController = require('./dashboard.controller');
+
+const router = express.Router();
+
+router.use(authenticate);
+
+router.get('/stats', dashboardController.getDashboardStats);
+
+module.exports = router;
