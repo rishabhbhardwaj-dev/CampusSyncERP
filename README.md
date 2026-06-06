@@ -195,4 +195,4 @@ The backend is structured around a modular feature-based architecture. Standard 
 **Rishabh Bhardwaj**  
 *Full Stack Developer*  
 - GitHub: [@rishabhbhardwaj-dev](https://github.com/rishabhbhardwaj-dev)
-- LinkedIn: [Rishabh Bhardwaj](https://www.linkedin.com/in/rishabhbhardwaj-tech)
+- LinkedIn: [linkedin.com/in/rishabhbhardwaj-tech](https://www.linkedin.com/in/rishabhbhardwaj-tech)
