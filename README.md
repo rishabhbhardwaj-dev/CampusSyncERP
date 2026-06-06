@@ -84,19 +84,17 @@ CampusSync/
 
 ## 📸 Screenshots
 
-*(Note: Replace placeholders with actual deployed images)*
-
 | Login Page | Dashboard |
 | :---: | :---: |
-| ![Login Page](https://via.placeholder.com/600x350/1e293b/ffffff?text=Secure+JWT+Login) | ![Dashboard](https://via.placeholder.com/600x350/1e293b/ffffff?text=Analytics+Dashboard) |
+| ![Login Page](./assets/login.png) | ![Dashboard](./assets/Dashboard.png) |
 
 | Student Management | Faculty Management |
 | :---: | :---: |
-| ![Students](https://via.placeholder.com/600x350/1e293b/ffffff?text=Student+Directory) | ![Faculty](https://via.placeholder.com/600x350/1e293b/ffffff?text=Faculty+Management) |
+| ![Students](./assets/Student%20Management.png) | ![Faculty](./assets/Faculty.png) |
 
-| Attendance Module | Timetable Module |
-| :---: | :---: |
-| ![Attendance](https://via.placeholder.com/600x350/1e293b/ffffff?text=Attendance+Tracking) | ![Timetable](https://via.placeholder.com/600x350/1e293b/ffffff?text=Dynamic+Timetable) |
+| Attendance Module |
+| :---: |
+| ![Attendance](./assets/Attendance.png) |
 
 ---
 
