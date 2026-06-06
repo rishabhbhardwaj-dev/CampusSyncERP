@@ -1,75 +1,111 @@
 # 🎓 CampusSync ERP
 
-> **An Enterprise-Grade University Management System**
->
-> CampusSync is a comprehensive, scalable, and modern Educational Resource Planning (ERP) platform designed to streamline campus operations. It bridges the gap between administrators, faculty, and students through a unified, role-based SaaS interface.
+> **A Modern, Enterprise-Grade College ERP System**
+
+CampusSync ERP is a comprehensive, full-stack Educational Resource Planning platform designed to digitalize and streamline campus operations. Built with a modern tech stack and featuring a sleek dark enterprise dashboard, it provides distinct role-based portals to bridge the gap between administrators, faculty, and students seamlessly.
 
 ---
 
-## 🚀 Project Overview
+## ✨ Features
 
-CampusSync provides a digital ecosystem to manage the entire academic lifecycle. From student admissions and faculty rosters to live attendance tracking, fee management, and dynamic exam grading, CampusSync replaces fragmented legacy systems with a single, blazing-fast web application. 
-
-Built with scalability in mind, it features a highly optimized Node.js backend using the **Controller-Service-Repository** pattern and a beautiful, high-fidelity React frontend wrapped in Tailwind CSS.
-
----
-
-## ✨ Core Features
-
-*   🔐 **Role-Based Access Control (RBAC):** Distinct, secure portals for Admins, Faculty, and Students.
-*   📊 **Real-time Analytics Dashboard:** Dynamic Recharts integration showing attendance trends, fee collection status, and demographic distributions.
-*   👨‍🎓 **Student & Faculty Management:** Enterprise data tables with advanced search, pagination, and inline status badges.
-*   📅 **Academic Timetables:** Class scheduling and automated routing for faculty.
-*   ✅ **Attendance Tracking:** Seamless daily attendance marking with automated percentage calculations and shortage alerts.
-*   📝 **Examination & Marks:** Complete workflow from internal exam grading to final scorecard generation.
-*   💳 **Fee Management:** Track total collections, pending dues, assign bulk fees, and generate payment receipts.
-*   📁 **Document Vault:** Secure upload and access for assignments, study materials, and administrative documents.
-*   📢 **Campus Notices:** Real-time push announcements across the entire organization.
+- **Authentication & Role-Based Access**: Secure JWT-based login with distinct authorization levels for Admin, Faculty, and Students.
+- **Dashboard Analytics**: Real-time insights and KPIs for overall campus operations, student demographics, and attendance trends.
+- **Student Management**: End-to-end student lifecycle tracking, enrollment management, and detailed academic profiles.
+- **Faculty Management**: Comprehensive faculty directory, department assignments, and subject allocation.
+- **Attendance Tracking**: Intuitive, daily attendance marking system with automated shortage alerts and percentage calculations.
+- **Timetable Management**: Dynamic class scheduling, room allocation, and automated faculty routing.
+- **Marks Management**: Complete examination workflow from internal grading to final scorecard generation.
+- **Fee Management**: Track pending dues, process fee transactions, and monitor overall financial collections.
+- **Notice Management**: Centralized announcement system with role-specific and department-specific targeting.
+- **Document Management**: Secure digital vault for uploading and sharing study materials, assignments, and administrative files.
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## 🛠️ Tech Stack
 
-CampusSync is built on a modern **PERN** (PostgreSQL, Express, React, Node) stack, utilizing Prisma as a next-generation ORM.
+**Frontend**
+- React 19
+- Vite
+- Tailwind CSS (Dark Enterprise Theme)
+- React Router DOM v7
+- Recharts (Data Visualization)
+- React Hot Toast & React Icons
 
-### Frontend
-*   **Framework:** React 18 (Vite)
-*   **Styling:** Tailwind CSS (Enterprise SaaS aesthetic, Glassmorphism, Dark Mode)
-*   **Routing:** React Router v6
-*   **Data Visualization:** Recharts
-*   **State & HTTP:** Axios, React Hooks
-*   **Icons & Toasts:** React-Icons (Heroicons), React Hot Toast
+**Backend**
+- Node.js
+- Express.js
+- Prisma ORM
+- JWT & bcryptjs (Security)
+- Multer (File Handling)
+- Express Validator
 
-### Backend
-*   **Runtime:** Node.js
-*   **Framework:** Express.js
-*   **Database ORM:** Prisma
-*   **Security:** JWT (JSON Web Tokens), bcryptjs, Helmet, CORS
-*   **Validation:** Express-Validator
-*   **File Handling:** Multer (Local/Cloud storage)
+**Database**
+- MySQL
+
+---
+
+## 🏗️ System Architecture
+
+CampusSync is built on a highly scalable Client-Server architecture:
+1. **Client**: A fast, responsive Single Page Application (SPA) built with React and Vite.
+2. **API Layer**: RESTful APIs powered by Node.js and Express.js, following a strictly decoupled `Routes -> Validator -> Controller -> Service` design pattern.
+3. **Data Layer**: MySQL database managed via Prisma ORM for type-safe database interactions and automated migrations.
+
+---
+
+## 📂 Project Structure
+
+```text
+CampusSync/
+├── client/                     # React Frontend Application
+│   ├── src/
+│   │   ├── components/         # Reusable UI components (Buttons, Modals, Forms)
+│   │   ├── context/            # React Context (AuthContext)
+│   │   ├── layouts/            # Dashboard & Page Layouts
+│   │   ├── pages/              # Module Views (Dashboard, Students, Attendance, etc.)
+│   │   ├── services/           # Axios API service wrappers
+│   │   └── index.css           # Global styles and Tailwind configs
+│   ├── package.json
+│   └── vite.config.js
+├── server/                     # Node.js Express Backend
+│   ├── prisma/                 # Prisma Schema, Migrations, and Seeders
+│   ├── src/
+│   │   ├── config/             # Environment and CORS configurations
+│   │   ├── middleware/         # Auth verification, Error Handling, File Uploads
+│   │   ├── modules/            # Domain-driven feature modules (auth, students, attendance)
+│   │   ├── utils/              # Helper utilities
+│   │   └── server.js           # Express App Entry Point
+│   ├── .env                    # Environment variables
+│   └── package.json
+└── README.md
+```
 
 ---
 
 ## 📸 Screenshots
 
-*(Replace the placeholder URLs with actual deployed image paths)*
+*(Note: Replace placeholders with actual deployed images)*
 
-| Dashboard Overview | Student Roster |
+| Login Page | Dashboard |
 | :---: | :---: |
-| ![Dashboard](https://via.placeholder.com/600x350/1e293b/ffffff?text=Admin+Dashboard+Analytics) | ![Students](https://via.placeholder.com/600x350/1e293b/ffffff?text=Enterprise+Data+Tables) |
+| ![Login Page](https://via.placeholder.com/600x350/1e293b/ffffff?text=Secure+JWT+Login) | ![Dashboard](https://via.placeholder.com/600x350/1e293b/ffffff?text=Analytics+Dashboard) |
 
-| Fee Management | Attendance Tracking |
+| Student Management | Faculty Management |
 | :---: | :---: |
-| ![Fees](https://via.placeholder.com/600x350/1e293b/ffffff?text=Fee+Collection+Module) | ![Attendance](https://via.placeholder.com/600x350/1e293b/ffffff?text=Live+Attendance+Tracking) |
+| ![Students](https://via.placeholder.com/600x350/1e293b/ffffff?text=Student+Directory) | ![Faculty](https://via.placeholder.com/600x350/1e293b/ffffff?text=Faculty+Management) |
+
+| Attendance Module | Timetable Module |
+| :---: | :---: |
+| ![Attendance](https://via.placeholder.com/600x350/1e293b/ffffff?text=Attendance+Tracking) | ![Timetable](https://via.placeholder.com/600x350/1e293b/ffffff?text=Dynamic+Timetable) |
 
 ---
 
-## ⚙️ Installation & Local Setup
+## ⚙️ Installation Guide
 
 ### Prerequisites
-*   Node.js (v18+ recommended)
-*   PostgreSQL or MySQL Database
-*   Git
+- Node.js (v18+ recommended)
+- MySQL Server
+- Git
 
 ### 1. Clone the Repository
 ```bash
@@ -82,92 +118,83 @@ cd CampusSync
 cd server
 npm install
 
-# Create a .env file and add your database credentials
-echo "DATABASE_URL=postgresql://user:password@localhost:5432/campussync" > .env
-echo "JWT_SECRET=your_super_secret_key" >> .env
-echo "PORT=5000" >> .env
+# Setup your environment variables (see next section)
 
-# Run database migrations
+# Generate Prisma Client & Run Migrations
+npx prisma generate
 npx prisma migrate dev --name init
 
-# Seed the database with initial Admin/Roles (if configured)
-npx prisma db seed
+# Seed the database (Optional)
+npm run prisma:seed
 
-# Start the development server
+# Start the Backend Server
 npm run dev
 ```
 
 ### 3. Frontend Setup
 ```bash
-# Open a new terminal
-cd client
+cd ../client
 npm install
 
-# Start the Vite development server
+# Start the Vite Development Server
 npm run dev
 ```
-The application will now be running at `http://localhost:5173`.
+The application will be running at `http://localhost:5173`.
 
 ---
 
-## 🛣️ API Structure
+## 🔐 Environment Variables
 
-The backend follows a strictly decoupled `Routes -> Validator -> Controller -> Service` architecture. 
+Create a `.env` file in the `server` directory:
 
-All API responses follow a standardized JSON envelope:
+```env
+# Database Configuration
+DATABASE_URL="mysql://username:password@localhost:3306/campussync"
+
+# Server Configuration
+PORT=5000
+
+# Authentication
+JWT_SECRET="your_secure_jwt_secret"
+```
+
+---
+
+## 🛣️ API Architecture Overview
+
+The backend is structured around a modular feature-based architecture. Standard API responses are structured as:
+
 ```json
 {
   "success": true,
-  "message": "Operation successful",
+  "message": "Data retrieved successfully",
   "data": { ... }
 }
 ```
 
-### Core Endpoints
-*   `POST /api/auth/login` - Authenticate users & return JWT
-*   `GET /api/students` - Paginated list of students with search filters
-*   `GET /api/dashboard/stats` - Fetch aggregate KPI metrics
-*   `POST /api/marks` - Upload student examination results
-*   `POST /api/fees/pay` - Process fee transactions
+**Key Modules & Routes:**
+- **Auth Module:** `/api/auth` (Login, Profile)
+- **Students Module:** `/api/students` (CRUD operations for students)
+- **Faculty Module:** `/api/faculty` (CRUD operations for faculty)
+- **Attendance Module:** `/api/attendance` (Mark and view attendance)
+- **Marks Module:** `/api/marks` (Upload and retrieve exam scores)
+- **Fees Module:** `/api/fees` (Manage student fee records)
+- **Timetable Module:** `/api/timetable` (Class scheduling)
 
 ---
 
-## 📂 Folder Structure
+## 🚀 Future Enhancements
 
-```text
-CampusSync/
-├── client/                     # React Frontend
-│   ├── src/
-│   │   ├── components/         # Reusable UI elements (Buttons, Modals, Loaders)
-│   │   ├── context/            # Global React Context (AuthContext)
-│   │   ├── layouts/            # Dashboard & Auth Shells
-│   │   ├── pages/              # Main Views (Dashboard, Students, Fees, etc.)
-│   │   ├── services/           # Axios API wrappers
-│   │   └── index.css           # Tailwind configuration
-├── server/                     # Node.js Backend
-│   ├── prisma/                 # Database Schema & Migrations
-│   ├── src/
-│   │   ├── config/             # DB & Environment configs
-│   │   ├── middleware/         # Auth, RBAC, Error Handling, Validators
-│   │   ├── modules/            # Feature-based domains (Students, Faculty, Auth)
-│   │   │   └── students/
-│   │   │       ├── student.routes.js
-│   │   │       ├── student.controller.js
-│   │   │       ├── student.service.js
-│   │   │       └── student.validator.js
-│   │   ├── utils/              # Helper classes (ApiResponse, ApiError)
-│   │   ├── app.js              # Express app initialization
-│   │   └── server.js           # Entry point
-└── README.md                   
-```
+- Integration with a Payment Gateway (Stripe/Razorpay) for live fee collection.
+- Automated Email/SMS notifications for absence and fee dues.
+- Mobile Application using React Native.
+- Advanced AI-powered analytics for predicting student performance.
 
 ---
 
-## 🌐 Deployment
+## 👨‍💻 Author
 
-*   **Live Application:** [https://campussync.yourdomain.com](#) *(Placeholder)*
-*   **API Documentation:** [https://api.campussync.yourdomain.com/docs](#) *(Placeholder)*
-
----
-
-*Designed and engineered for modern academic institutions. If you encounter any issues, please open an issue in the repository.*
+**Your Name**  
+*Full Stack Developer*  
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
