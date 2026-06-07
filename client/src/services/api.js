@@ -11,7 +11,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api', // Use env var in prod, fallback to proxy in dev
+  // Hardcoded for production to completely bypass Vercel environment variable issues
+  baseURL: import.meta.env.DEV ? '/api' : 'https://campussyncerp-production.up.railway.app/api',
   withCredentials: true,     // Send cookies (JWT) with every request
   headers: {
     'Content-Type': 'application/json',
