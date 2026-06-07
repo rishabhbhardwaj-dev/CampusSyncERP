@@ -8,9 +8,23 @@
 const env = require('./env');
 
 const corsOptions = {
-  origin: env.CLIENT_URL,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    
+    // Allow exact match, localhost, or any vercel.app preview domain
+    const isAllowed = 
+      origin === env.CLIENT_URL || 
+      origin.includes('localhost') || 
+      origin.includes('vercel.app');
+      
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true, // Allow cookies to be sent
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
