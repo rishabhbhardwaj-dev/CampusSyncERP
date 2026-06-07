@@ -11,7 +11,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',           // Vite proxy forwards this to localhost:5000/api
+  baseURL: import.meta.env.VITE_API_URL || '/api', // Use env var in prod, fallback to proxy in dev
   withCredentials: true,     // Send cookies (JWT) with every request
   headers: {
     'Content-Type': 'application/json',
