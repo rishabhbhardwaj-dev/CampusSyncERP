@@ -14,7 +14,7 @@ const env = require('../../config/env');
 const cookieOptions = {
   httpOnly: true,       // JavaScript can't access this cookie (XSS protection)
   secure: env.NODE_ENV === 'production',  // HTTPS only in production
-  sameSite: 'lax',      // CSRF protection
+  sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',      // CSRF protection
   maxAge: env.COOKIE_MAX_AGE,
 };
 
