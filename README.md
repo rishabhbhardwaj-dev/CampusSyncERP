@@ -4,6 +4,8 @@
 
 CampusSync ERP is a comprehensive, full-stack Educational Resource Planning platform designed to digitalize and streamline campus operations. Built with a modern tech stack and featuring a sleek dark enterprise dashboard, it provides distinct role-based portals to bridge the gap between administrators, faculty, and students seamlessly.
 
+### 🔴 [Live Demo: campus-sync-erp.vercel.app](https://campus-sync-erp.vercel.app)
+
 ---
 
 ## ✨ Features
