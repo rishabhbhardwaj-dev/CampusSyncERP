@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://campussyncerp-production.up.railway.app/api/:path*"
+      "destination": "https://campussync-erp-backend.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",

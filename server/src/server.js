@@ -10,17 +10,24 @@ const prisma = require('./config/db');
 
 const startServer = async () => {
   try {
-    // Test database connection before starting
-    await prisma.$connect();
-    console.log('✅ Database connected successfully.');
-
-    app.listen(env.PORT, () => {
+    // Start listening immediately to avoid blocking on DB connection
+    // (Crucial for preventing cold start / container startup timeouts on Render)
+    const server = app.listen(env.PORT, () => {
       console.log(`\n🚀 CampusSyncERP Server`);
       console.log(`   Environment: ${env.NODE_ENV}`);
       console.log(`   Port:        ${env.PORT}`);
       console.log(`   URL:         http://localhost:${env.PORT}`);
       console.log(`   Health:      http://localhost:${env.PORT}/api/health\n`);
     });
+
+    // Connect to database asynchronously
+    prisma.$connect()
+      .then(() => {
+        console.log('✅ Database connected successfully.');
+      })
+      .catch((error) => {
+        console.error('❌ Database connection failed:', error.message);
+      });
   } catch (error) {
     console.error('❌ Failed to start server:', error.message);
     process.exit(1);
