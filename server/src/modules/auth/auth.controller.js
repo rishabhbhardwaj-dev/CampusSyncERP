@@ -14,7 +14,7 @@ const env = require('../../config/env');
 const cookieOptions = {
   httpOnly: true,       // JavaScript can't access this cookie (XSS protection)
   secure: env.NODE_ENV === 'production',  // HTTPS only in production
-  sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',      // CSRF protection
+  sameSite: 'lax',      // 'lax' is required for same-site cookies through Vercel proxy
   maxAge: env.COOKIE_MAX_AGE,
 };
 
