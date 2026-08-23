@@ -6,7 +6,13 @@ class StudentService {
   async getAllStudents(query) {
     const { search, department, semester, course, page = 1, limit = 10 } = query;
 
-    const where = { user: { role: 'STUDENT' } };
+    // Build user filter first — never overwrite it
+    const userFilter = { role: 'STUDENT' };
+    if (department) {
+      userFilter.departmentId = parseInt(department);
+    }
+
+    const where = { user: userFilter };
 
     if (search) {
       where.OR = [
@@ -16,7 +22,6 @@ class StudentService {
       ];
     }
 
-    if (department) where.user = { ...where.user, departmentId: parseInt(department) };
     if (semester) where.semester = parseInt(semester);
     if (course) where.courseId = parseInt(course);
 
