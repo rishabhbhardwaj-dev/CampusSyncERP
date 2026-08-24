@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -25,6 +25,14 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('sessionExpired') === 'true') {
+      localStorage.removeItem('sessionExpired');
+      toast.error('Your session has expired. Please log in again.');
+    }
+  }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
