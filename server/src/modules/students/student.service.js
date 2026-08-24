@@ -1,7 +1,11 @@
 const prisma = require('../../config/db');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const ApiError = require('../../utils/apiError');
 
+const generateRandomPassword = (length = 10) => {
+  return crypto.randomBytes(length).toString('base64').slice(0, length);
+};
 class StudentService {
   async getAllStudents(query) {
     const { search, department, semester, course, page = 1, limit = 10 } = query;
@@ -102,7 +106,8 @@ class StudentService {
     const existingEnrollment = await prisma.student.findUnique({ where: { enrollmentNo } });
     if (existingEnrollment) throw new ApiError(409, 'This enrollment number is already taken.');
 
-    const hashedPassword = await bcrypt.hash(password || 'student123', 10);
+    const plainPassword = password || generateRandomPassword();
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     return await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
@@ -133,7 +138,7 @@ class StudentService {
         },
       });
 
-      return student;
+      return { ...student, plainPassword };
     });
   }
 

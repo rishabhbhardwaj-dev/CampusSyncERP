@@ -2,18 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import studentService from '../services/studentService';
 import { academicService } from '../services/academicService';
-import { 
-  HiOutlineMagnifyingGlass, 
-  HiOutlinePlus, 
-  HiOutlinePencilSquare, 
-  HiOutlineTrash, 
-  HiOutlineXMark, 
-  HiOutlineAcademicCap, 
-  HiOutlineUserGroup, 
-  HiOutlineChevronLeft, 
+import {
+  HiOutlineMagnifyingGlass,
+  HiOutlinePlus,
+  HiOutlinePencilSquare,
+  HiOutlineTrash,
+  HiOutlineXMark,
+  HiOutlineAcademicCap,
+  HiOutlineUserGroup,
+  HiOutlineChevronLeft,
   HiOutlineChevronRight,
   HiOutlineFunnel,
-  HiOutlineArrowDownTray
+  HiOutlineArrowDownTray,
+  HiOutlineCheckCircle
 } from 'react-icons/hi2';
 
 const SkeletonRow = () => (
@@ -40,6 +41,8 @@ const StudentsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [createdPassword, setCreatedPassword] = useState(null);
+
   const [courses, setCourses] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [form, setForm] = useState({ name: '', email: '', phone: '', enrollmentNo: '', courseId: '', semester: 1, section: '', admissionYear: new Date().getFullYear(), guardianName: '', guardianPhone: '', departmentId: '' });
@@ -98,9 +101,20 @@ const StudentsPage = () => {
       if (editingStudent) {
         await studentService.update(editingStudent.id, form);
         toast.success('Student updated!');
+        setCreatedPassword(null);
       } else {
-        await studentService.create(form);
-        toast.success('Student added!');
+        const res = await studentService.create(form);
+        const msg = res.data?.message || '';
+        const passwordMatch = msg.match(/Temporary password:\s*(\S+)/);
+        if (passwordMatch) {
+          setCreatedPassword({
+            name: form.name,
+            email: form.email,
+            password: passwordMatch[1],
+          });
+        } else {
+          toast.success('Student added!');
+        }
       }
       setShowModal(false);
       fetchStudents();
@@ -108,7 +122,6 @@ const StudentsPage = () => {
       toast.error(err.response?.data?.message || 'Operation failed');
     }
   };
-
   const handleDelete = async () => {
     try {
       await studentService.delete(deleteTarget.id);
@@ -357,6 +370,55 @@ const StudentsPage = () => {
               <button onClick={() => setDeleteTarget(null)} className="px-6 py-3 rounded-xl border border-white/10 text-on-surface font-label-md font-bold hover:bg-white/5 transition-colors w-full">Cancel</button>
               <button onClick={handleDelete} className="px-6 py-3 rounded-xl bg-error text-on-error font-label-md font-bold hover:scale-[1.02] shadow-lg shadow-error/20 transition-all w-full">Delete Record</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Password Display Modal */}
+      {createdPassword && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn" onClick={() => setCreatedPassword(null)}>
+          <div className="bg-surface-container-high rounded-2xl w-full max-w-md p-8 shadow-2xl border border-white/10" onClick={e => e.stopPropagation()}>
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
+              <HiOutlineCheckCircle className="w-10 h-10 text-primary" />
+            </div>
+            <h3 className="font-headline-md text-[24px] font-bold text-on-surface mb-2 text-center">Student Created Successfully</h3>
+            <div className="bg-surface-container-low rounded-xl p-6 mt-6 border border-white/10 space-y-3">
+              <div className="flex justify-between">
+                <span className="text-on-surface-variant text-[13px]">Name</span>
+                <span className="text-on-surface font-semibold text-[14px]">{createdPassword.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-on-surface-variant text-[13px]">Email</span>
+                <span className="text-on-surface font-semibold text-[14px]">{createdPassword.email}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-on-surface-variant text-[13px]">Temporary Password</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-on-surface font-mono font-bold text-[14px] bg-primary/10 px-3 py-1 rounded-lg border border-primary/20">{createdPassword.password}</span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(createdPassword.password);
+                      toast.success('Password copied!');
+                    }}
+                    className="p-2 rounded-lg bg-surface-container-high border border-white/10 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all"
+                    title="Copy password"
+                  >
+                    <HiOutlineArrowDownTray className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 p-4 rounded-xl bg-error/5 border border-error/20">
+              <p className="text-[12px] text-error font-semibold text-center">
+                Share this password with the student securely. It will not be shown again.
+              </p>
+            </div>
+            <button
+              onClick={() => setCreatedPassword(null)}
+              className="mt-6 w-full py-3 rounded-xl bg-primary text-on-primary font-label-md font-bold hover:scale-[1.02] shadow-lg shadow-primary/20 transition-all"
+            >
+              Done
+            </button>
           </div>
         </div>
       )}

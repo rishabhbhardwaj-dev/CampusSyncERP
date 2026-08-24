@@ -32,7 +32,10 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const student = await studentService.createStudent(req.body);
-    new ApiResponse(201, 'Student created successfully.', student).send(res);
+    const message = student.plainPassword
+      ? `Student created successfully. Temporary password: ${student.plainPassword}`
+      : 'Student created successfully.';
+    new ApiResponse(201, message, student).send(res);
   } catch (error) {
     next(error);
   }

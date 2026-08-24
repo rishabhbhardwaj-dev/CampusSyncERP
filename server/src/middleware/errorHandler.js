@@ -19,7 +19,8 @@ const errorHandler = (err, req, res, next) => {
   // Prisma known errors
   if (err.code === 'P2002') {
     statusCode = 409;
-    message = `Duplicate entry: ${err.meta?.target?.join(', ')} already exists.`;
+    const target = Array.isArray(err.meta?.target) ? err.meta.target.join(', ') : err.meta?.target || 'field';
+    message = `Duplicate entry: ${target} already exists.`;
   }
   if (err.code === 'P2025') {
     statusCode = 404;
