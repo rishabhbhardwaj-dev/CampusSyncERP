@@ -7,7 +7,7 @@
 // withCredentials: true → sends httpOnly cookies (JWT) with every request.
 // This is how the backend knows who is logged in.
 // ────────────────────────────────────────────────────────────
-
+import axios from 'axios';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   withCredentials: true,

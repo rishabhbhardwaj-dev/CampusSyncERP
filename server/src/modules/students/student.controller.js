@@ -8,13 +8,7 @@ const ApiResponse = require('../../utils/apiResponse');
 const getAll = async (req, res, next) => {
   try {
     const result = await studentService.getAllStudents(req.query);
-    // Maintain old API contract where pagination is top-level to prevent frontend crash
-    res.status(200).json({
-      success: true,
-      message: 'Students fetched successfully',
-      data: result.data,
-      pagination: result.pagination
-    });
+    new ApiResponse(200, 'Students fetched successfully', result.data, result.pagination).send(res);
   } catch (error) {
     next(error);
   }
