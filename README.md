@@ -4,6 +4,10 @@
 
 **CampusSync ERP** is a full-stack college ERP platform designed to streamline student management, faculty coordination, attendance, academic records, timetables, and administrative workflows through role-based access control.
 
+## 🌐 Live Demo
+
+**[campus-sync-erp-3p4u.vercel.app](https://campus-sync-erp-3p4u.vercel.app)**
+
 ## 🚀 Key Features
 
 - **Student Management** — Manage student records and academic information
@@ -262,7 +266,12 @@ The backend follows a modular API structure with centralized response formatting
 
 The frontend is configured for deployment with **Vercel**.
 
+
+
+**[🔗 Live URL](https://campus-sync-erp-3p4u.vercel.app)**
 The application uses separate frontend and backend environments, with environment variables used for database and authentication configuration.
+
+
 
 ## 🔮 Future Enhancements
 
