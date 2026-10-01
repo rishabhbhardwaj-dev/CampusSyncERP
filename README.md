@@ -6,7 +6,7 @@
 
 ## 🌐 Live Demo
 
-**[campus-sync-erp-3p4u.vercel.app](https://campus-sync-erp-3p4u.vercel.app)**
+**[🚀 Live Demo](https://campus-sync-erp.vercel.app)**
 
 ## 🚀 Key Features
 
@@ -268,7 +268,7 @@ The frontend is configured for deployment with **Vercel**.
 
 
 
-**[🔗 Live URL](https://campus-sync-erp-3p4u.vercel.app)**
+**[🚀 Live Demo](https://campus-sync-erp.vercel.app)**
 The application uses separate frontend and backend environments, with environment variables used for database and authentication configuration.
 
 
