@@ -6,7 +6,7 @@
 
 ## 🌐 Live Demo
 
-**[campus-sync-erp-3p4u.vercel.app](https://campus-sync-erp.vercel.app)**
+**[campus-sync-erp.vercel.appp](https://campus-sync-erp.vercel.app)**
 
 ## 🚀 Key Features
 
