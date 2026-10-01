@@ -272,7 +272,7 @@ The frontend is configured for deployment with **Vercel**.
 
 Deployed on **Vercel**.
 
-**[🔗 Live URL](https://campus-sync-erp-3p4u.vercel.app)**
+**[🔗 Live URL](https://campus-sync-erp.vercel.app)**
 
 
 
